@@ -11,15 +11,12 @@ namespace BenchCrisis.Infrastructure.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Crisis> builder)
         {
+            builder.ToTable("Crisis");
+
             builder.HasKey(c => c.Id);
 
             builder.Property(c => c.Status)
                 .HasConversion<string>();
-
-            //builder.OwnsOne(
-            //    c => c.CrisisName,
-            //    a => a.Property(cn => cn.Value).HasMaxLength(75).HasColumnName("Name")
-            //);
 
             builder.OwnsOne(c => c.CrisisName)
                 .Property(c => c.Value)

@@ -29,15 +29,5 @@ namespace BenchCrisis.Core.Models.ValueObjects
         {
             yield return Value;
         }
-
-        public static explicit operator CrisisName(string crisisName)
-        {
-            return Create(crisisName).Value;
-        }
-
-        public static implicit operator string(CrisisName crisisName)
-        {
-            return crisisName.Value;
-        }
     }
 }

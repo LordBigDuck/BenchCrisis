@@ -43,5 +43,28 @@ namespace BenchCrisis.Web.Features.Crisises
             var result = await _mediator.Send(request);
             return Ok(result);
         }
+
+        [HttpPut("{id}/teams")]
+        public async Task<ActionResult<object>> Update([FromRoute] int id, ICollection<int> TeamIds)
+        {
+            var request = new UpdateCrisisTeamsRequest
+            {
+                CrisisId = id,
+                TeamIds = TeamIds
+            };
+
+            var result = await _mediator.Send(request);
+            return Ok(result);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<object>> Update([FromRoute] int id, UpdateCrisisInformationRequest request)
+        {
+            if (id != request.CrisisId)
+                return BadRequest("Endpoint entity Id does not match request entity id");
+
+            var result = await _mediator.Send(request);
+            return Ok(result);
+        }
     }
 }

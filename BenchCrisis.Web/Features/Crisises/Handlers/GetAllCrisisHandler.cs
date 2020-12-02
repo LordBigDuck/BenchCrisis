@@ -31,7 +31,7 @@ namespace BenchCrisis.Web.Features.Crisises.Handlers
                 .Include(c => c.CrisisTeams)
                 .ToListAsync(cancellationToken);
 
-            var viewModel = _mapper.Map<ICollection<BaseCrisisViewModel>>(crisises);
+            var viewModel = BaseCrisisViewModel.Map(crisises).ToList();
             return viewModel;
         }
     }

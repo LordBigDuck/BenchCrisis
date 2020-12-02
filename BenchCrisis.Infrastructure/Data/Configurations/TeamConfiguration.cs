@@ -16,6 +16,9 @@ namespace BenchCrisis.Infrastructure.Data.Configurations
             builder.Property(t => t.Name)
                 .HasMaxLength(50)
                 .IsRequired();
+
+            builder.HasMany(t => t.CrisisTeams)
+                .WithOne(ct => ct.Team);
         }
     }
 }

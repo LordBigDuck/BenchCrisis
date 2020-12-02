@@ -11,8 +11,7 @@ namespace BenchCrisis.Infrastructure.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<CrisisTeam> builder)
         {
-            //builder.HasKey(ct => new { ct.CrisisId, ct.TeamId });
-            builder.HasKey(ct => ct.Id);
+            builder.HasKey(ct => new { ct.CrisisId, ct.TeamId });
 
             builder.HasOne(ct => ct.Crisis)
                 .WithMany(c => c.CrisisTeams);

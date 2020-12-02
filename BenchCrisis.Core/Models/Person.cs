@@ -8,6 +8,8 @@ namespace BenchCrisis.Core.Models
 #nullable enable
     public class Person
     {
+        public int Id { get; private set; }
+
         private readonly PersonName _name;
         public virtual PersonName Name => _name;
 

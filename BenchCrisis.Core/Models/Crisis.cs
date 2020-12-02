@@ -13,18 +13,10 @@ namespace BenchCrisis.Core.Models
     {
         public int Id { get; private set;  }
         public CrisisStatus Status { get; private set; }
-
-        private string _crisisName;
-        public CrisisName CrisisName
-        {
-            get => (CrisisName)_crisisName;
-            private set => _crisisName = value;
-        }
-
+        public CrisisName CrisisName { get; }
         public string? Description { get; private set; }
 
         private ICollection<CrisisTeam> _crisisTeams;
-        //public virtual IReadOnlyCollection<CrisisTeam> CrisisTeams => _crisisTeams.ToList();
         public virtual IReadOnlyCollection<CrisisTeam> CrisisTeams
         {
             get => _crisisTeams.ToList();
@@ -38,10 +30,30 @@ namespace BenchCrisis.Core.Models
 
         public Crisis(CrisisName crisisName, string? description = null) : this()
         {
-            _crisisName = crisisName ?? throw new ArgumentNullException(nameof(crisisName));
+            CrisisName = crisisName ?? throw new ArgumentNullException(nameof(crisisName));
             Description = description;
 
-            Status = CrisisStatus.ONGOING;
+            Status = CrisisStatus.Ongoing;
+        }
+
+        public void UpdateDescription(string? description)
+        {
+            Description = description;   
+        }
+
+        public Result UpdateTeams(ICollection<Team> teams)
+        {
+            if (teams == null)
+                return Result.Fail("Teams cannot be null");
+
+            var newTeams = new List<CrisisTeam>();
+            foreach (var team in teams)
+            {
+                var crisisTeam = new CrisisTeam(this, team);
+                newTeams.Add(crisisTeam);
+            }
+            _crisisTeams = newTeams;
+            return Result.Ok();
         }
 
         public Result AddTeam(Team team)
@@ -70,9 +82,12 @@ namespace BenchCrisis.Core.Models
             return Result.Ok();
         }
 
-        public void StopCrisis()
+        public Result StopCrisis()
         {
-            Status = CrisisStatus.ENDED;
+            if (Status == CrisisStatus.Ended)
+                return Result.Fail("Crisis is already stopped");
+            Status = CrisisStatus.Ended;
+            return Result.Ok();
         }
     }
 }

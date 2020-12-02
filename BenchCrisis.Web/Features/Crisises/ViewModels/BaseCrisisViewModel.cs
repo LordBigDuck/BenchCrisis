@@ -29,13 +29,24 @@ namespace BenchCrisis.Web.Features.Crisises.ViewModels
                 Name = crisis.CrisisName.Value,
                 Description = crisis.Description,
                 Status = crisis.Status.ToString(),
-                Teams = crisis.CrisisTeams.Select(t => new Team
+                Teams = crisis.CrisisTeams?.Select(t => new Team
                 {
                     Id = t.Team.Id,
                     Name = t.Team.Name,
                     Description = t.Team.Description
                 }).ToList()
             };
+        }
+
+        public static IEnumerable<BaseCrisisViewModel> Map(IEnumerable<Crisis> crisisList)
+        {
+            var result = new List<BaseCrisisViewModel>();
+            foreach (var crisis in crisisList)
+            {
+                var viewModel = Map(crisis);
+                result.Add(viewModel);
+            }
+            return result;
         }
     }
 }

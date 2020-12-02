@@ -14,7 +14,6 @@ namespace BenchCrisis.Web.Test.Handlers
 {
     public class CreateCrisisHandlerTest
     {
-
         [Fact]
         public async Task CreateCrisis_RequestTeamIdsEmpty_ReturnFail()
         {
@@ -32,8 +31,8 @@ namespace BenchCrisis.Web.Test.Handlers
         public async Task CreateCrisis_NotAllTeamsFound_ReturnFail()
         {
             var context = new AppDbContext(DbHelper.GetDbContextOptions());
-            context.Teams.Add(new Team { Id = 1, Name = "Team 1", Description = "Description 1" });
-            context.Teams.Add(new Team { Id = 2, Name = "Team 2", Description = "Description 2" });
+            context.Teams.Add(new Team(name: "Team 1", description: "Description 1"));
+            context.Teams.Add(new Team(name: "Team 2", description: "Description 2"));
             context.SaveChanges();
             
             var request = new CreateCrisisRequest()
@@ -54,8 +53,8 @@ namespace BenchCrisis.Web.Test.Handlers
         public async Task CreateCrisis_RequestOk_ReturnViewModel()
         {
             using var context = new AppDbContext(DbHelper.GetDbContextOptions());
-            context.Teams.Add(new Team { Id = 1, Name = "Team 1", Description = "Description 1" });
-            context.Teams.Add(new Team { Id = 2, Name = "Team 2", Description = "Description 2" });
+            context.Teams.Add(new Team(name: "Team 1", description: "Description 1"));
+            context.Teams.Add(new Team(name: "Team 2", description: "Description 2"));
             context.SaveChanges();
             var request = new CreateCrisisRequest()
             {

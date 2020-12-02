@@ -1,4 +1,5 @@
 ﻿using BenchCrisis.Core.Models;
+using BenchCrisis.Core.Models.Enums;
 using BenchCrisis.Core.Models.ValueObjects;
 using FluentAssertions;
 using System;
@@ -65,6 +66,29 @@ namespace BenchCrisis.Core.Test
             var result = crisis.AddTeam(team2);
 
             result.IsSuccess.Should().BeTrue();
+        }
+
+        [Fact]
+        public void StopCrisis_CrisisOngoing_ReturnOk()
+        {
+            var crisisName = CrisisName.Create("crisis 1");
+            var crisis = new Crisis(crisisName.Value, "crisis description");
+            var result = crisis.StopCrisis();
+
+            result.IsSuccess.Should().BeTrue();
+            crisis.Status.Should().Be(CrisisStatus.Ended);
+        }
+
+        [Fact]
+        public void StopCrisis_AlreadyEnded_ReturnFail()
+        {
+            var crisisName = CrisisName.Create("crisis 1");
+            var crisis = new Crisis(crisisName.Value, "crisis description");
+            crisis.StopCrisis();
+            var result = crisis.StopCrisis();
+
+            result.IsFailed.Should().BeTrue();
+            result.WithError("Crisis is already stopped");
         }
     }
 }

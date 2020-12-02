@@ -6,7 +6,7 @@ namespace BenchCrisis.Core.Models.Enums
 {
     public enum CrisisStatus
     {
-        ONGOING,
-        ENDED
+        Ongoing,
+        Ended
     }
 }
